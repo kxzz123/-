@@ -5,12 +5,12 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>智慧校园-jmu</title>
-    <!-- 引⼊资源 -->
+    <title>智慧校园-jmu 入校导览</title>
+    <!-- 引入资源 -->
     <!-- css样式 -->
     <link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css" />
     <link rel="stylesheet" href="./css/index.css">
-    <!-- 引⼊js资源 -->
+    <!-- 引入js资源 -->
     <script type="text/javascript">
         window._AMapSecurityConfig = {
             securityJsCode: 'd5f27193395554854358b0886f63c761',
@@ -21,9 +21,12 @@
 </head>
 
 <body>
+    <button id="showImageBtn"
+        onclick="window.location.href='https://www.jmu.edu.cn/__local/B/E1/F8/76002F4B5092DF01953C44BE142_AE54560A_B21DB.jpg'">建筑寻找推荐按</button>
     <!-- 创建地图容器 -->
     <div id="container"></div>
-    <div class="info">点击地图显示图像</div>
+    <div class="info">点击地图显示图像（新页面打算实现内容</div>
+    <div id="imageDiv"></div>
     <script>
         //创建地图对象
         var map = new AMap.Map('container', {
@@ -31,23 +34,92 @@
             zoom: 17,
             viewMode: '3D',
             pitch: 45,
-        })
+        });
 
-        //kongjian
-        AMap.plugin(['AMap.ToolBar', 'AMap.Scale', 'AMap.ControlBar'], function () {
-            map.addControl(new AMap.ToolBar())
-            map.addControl(new AMap.Scale())
-            map.addControl(new AMap.ControlBar())
-        })
+        // 添加南门标记点
+        var southGateMarker = new AMap.Marker({
+            position: [118.093604, 24.574557],
+            map: map,
+            title: '南门'
+        });
 
-        //jianting
+        // 添加东门标记点
+        var eastGateMarker = new AMap.Marker({
+            position: [118.096731, 24.577488],
+            map: map,
+            title: '东门'
+        });
+
+        // 添加体院门标记点
+        var gymGateMarker = new AMap.Marker({
+            position: [118.098153, 24.580445],
+            map: map,
+            title: '体院门'
+        });
+
+        // 添加小铁门标记点
+        var smallGateMarker = new AMap.Marker({
+            position: [118.100755, 24.584947],
+            map: map,
+            title: '小铁门'
+        });
+
+        // 创建信息窗体
+        var infoWindow = new AMap.InfoWindow();
+
+        // 监听标记点的点击事件
+        southGateMarker.on('click', function (e) {
+            infoWindow.setContent('南门');
+            infoWindow.open(map, southGateMarker.getPosition());
+        });
+
+        eastGateMarker.on('click', function (e) {
+            infoWindow.setContent('东门');
+            infoWindow.open(map, eastGateMarker.getPosition());
+        });
+
+        gymGateMarker.on('click', function (e) {
+            infoWindow.setContent('体院门');
+            infoWindow.open(map, gymGateMarker.getPosition());
+        });
+
+        smallGateMarker.on('click', function (e) {
+            infoWindow.setContent('小铁门');
+            infoWindow.open(map, smallGateMarker.getPosition());
+        });
+
+        // 添加地图点击事件监听器
         map.on('click', function (e) {
-            var marker = new AMap.Marker({
-                position: e.lnglat,
-            })
-            map.add(marker)
-        })
+            // 获取点击位置的经纬度坐标
+            var lnglat = e.lnglat;
+
+            // 在点击位置附近添加一个标记，并打开信息窗体
+            var nearbyMarker = new AMap.Marker({
+                position: lnglat,
+                map: map
+            });
+            infoWindow.setContent('点击的位置');
+            infoWindow.open(map, nearbyMarker.getPosition());
+        });
+
+        function showImage() {
+            var imageDiv = document.getElementById('imageDiv');
+            var image = document.createElement('img');
+            image.src = 'https://www.jmu.edu.cn/__local/0/34/55/6E22D8C1D175F990BC27CFBDD51_FD23FC5D_AE2BA.jpg';
+            image.alt = '二维图像';
+            imageDiv.appendChild(image);
+            document.getElementById('showImageBtn').style.display = 'none';
+        }
+        AMap.plugin(
+            ['AMap.ToolBar', 'AMap.Scale', 'AMap.ControlBar'],
+            function () {
+                map.addControl(new AMap.ToolBar())
+                map.addControl(new AMap.Scale())
+                map.addControl(new AMap.ControlBar())
+            }
+        )
     </script>
+
 </body>
 
 </html>
