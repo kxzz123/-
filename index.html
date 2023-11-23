@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智慧校园-jmu</title>
+    <!-- 引⼊资源 -->
+    <!-- css样式 -->
+    <link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css" />
+    <link rel="stylesheet" href="./css/index.css">
+    <!-- 引⼊js资源 -->
+    <script type="text/javascript">
+        window._AMapSecurityConfig = {
+            securityJsCode: 'd5f27193395554854358b0886f63c761',
+        }
+    </script>
+    <script type="text/javascript"
+        src="https://webapi.amap.com/maps?v=2.0&key=a1d774002e33175d444b7e2cebf6018f"></script>
+</head>
+
+<body>
+    <!-- 创建地图容器 -->
+    <div id="container"></div>
+    <div class="info">点击地图显示图像</div>
+    <script>
+        //创建地图对象
+        var map = new AMap.Map('container', {
+            center: [118.092315, 24.577955],
+            zoom: 17,
+            viewMode: '3D',
+            pitch: 45,
+        })
+
+        //kongjian
+        AMap.plugin(['AMap.ToolBar', 'AMap.Scale', 'AMap.ControlBar'], function () {
+            map.addControl(new AMap.ToolBar())
+            map.addControl(new AMap.Scale())
+            map.addControl(new AMap.ControlBar())
+        })
+
+        //jianting
+        map.on('click', function (e) {
+            var marker = new AMap.Marker({
+                position: e.lnglat,
+            })
+            map.add(marker)
+        })
+    </script>
+</body>
+
+</html>
