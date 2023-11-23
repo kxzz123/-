@@ -5,25 +5,289 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>图像页面</title>
-    <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
+    <title>智慧校园-jmu 入校导览</title>
+    <!-- 引入资源 -->
+    <!-- css样式 -->
+    <link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css" />
+    <link rel="stylesheet" href="./css/index.css">
+    <!-- 引入js资源 -->
+    <script type="text/javascript">
+        window._AMapSecurityConfig = {
+            securityJsCode: 'd5f27193395554854358b0886f63c761',
         }
-
-        img {
-            max-width: 100%;
-            max-height: 100%;
-        }
-    </style>
+    </script>
+    <script type="text/javascript"
+        src="https://webapi.amap.com/maps?v=2.0&key=a1d774002e33175d444b7e2cebf6018f"></script>
 </head>
 
 <body>
-    <img src="file:///E:/1027webgis/webgis/ppp.jpg" alt="二维图像">
+    <button id="showImageBtn"
+        onclick="window.location.href='https://www.jmu.edu.cn/__local/B/E1/F8/76002F4B5092DF01953C44BE142_AE54560A_B21DB.jpg'">二维俯视图</button>
+    <!-- 创建地图容器 -->
+    <div id="container"></div>
+    <div class="info">路线规划：点击地图第一次为起点--起点最好为所在点否则可能无法显示，第二次为终点</div>
+    <div id="imageDiv"></div>
+    <script>
+        //创建地图对象
+        var map = new AMap.Map('container', {
+            center: [118.092315, 24.577955],
+            zoom: 17,
+            viewMode: '3D',
+            pitch: 45,
+        });
+
+        // 添加南门标记点
+        var southGateMarker = new AMap.Marker({
+            position: [118.093604, 24.574557],
+            map: map,
+            title: '南门'
+        });
+
+        // 添加东门标记点
+        var eastGateMarker = new AMap.Marker({
+            position: [118.096731, 24.577488],
+            map: map,
+            title: '东门'
+        });
+
+        // 添加体院门标记点
+        var gymGateMarker = new AMap.Marker({
+            position: [118.098153, 24.580445],
+            map: map,
+            title: '体院门'
+        });
+
+        // 添加小铁门标记点
+        var smallGateMarker = new AMap.Marker({
+            position: [118.100755, 24.584947],
+            map: map,
+            title: '小铁门'
+        });
+
+        var 海外GateMarker = new AMap.Marker({
+            position: [118.096762, 24.579093],
+            map: map,
+            title: '海外学院'
+        });
+
+        var 港工GateMarker = new AMap.Marker({
+            position: [118.095721, 24.578157],
+            map: map,
+            title: '港工'
+        });
+
+        var 工商GateMarker = new AMap.Marker({
+            position: [118.095518, 24.576591],
+            map: map,
+            title: '工商'
+        });
+
+        var 师范GateMarker = new AMap.Marker({
+            position: [118.093334, 24.576864],
+            map: map,
+            title: '师范'
+        });
+
+        var 计算机GateMarker = new AMap.Marker({
+            position: [118.092235, 24.576381],
+            map: map,
+            title: '计算机'
+        });
+
+        var 理学院GateMarker = new AMap.Marker({
+            position: [118.091961, 24.57702],
+            map: map,
+            title: '理学院'
+        });
+
+        var 外国语GateMarker = new AMap.Marker({
+            position: [118.093361, 24.578576],
+            map: map,
+            title: '外国语'
+        });
+
+        var 嘉庚图书馆GateMarker = new AMap.Marker({
+            position: [118.095196, 24.580206],
+            map: map,
+            title: '嘉庚图书馆'
+        });
+
+        var 延奎图书馆GateMarker = new AMap.Marker({
+            position: [118.092487, 24.577908],
+            map: map,
+            title: '延奎图书馆'
+        });
+
+        var 信息GateMarker = new AMap.Marker({
+            position: [118.093259, 24.580435],
+            map: map,
+            title: '信息'
+        });
+
+        海外GateMarker.on('click', function (e) {
+            infoWindow.setContent('海外学院');
+            infoWindow.open(map, 海外GateMarker.getPosition());
+            calculateRoute(海外GateMarker.getPosition());
+        });
+
+        港工GateMarker.on('click', function (e) {
+            infoWindow.setContent('港工');
+            infoWindow.open(map, 港工GateMarker.getPosition());
+            calculateRoute(港工GateMarker.getPosition());
+        });
+
+        工商GateMarker.on('click', function (e) {
+            infoWindow.setContent('工商');
+            infoWindow.open(map, 工商GateMarker.getPosition());
+            calculateRoute(工商GateMarker.getPosition());
+        });
+
+        师范GateMarker.on('click', function (e) {
+            infoWindow.setContent('师范');
+            infoWindow.open(map, 师范GateMarker.getPosition());
+            calculateRoute(师范GateMarker.getPosition());
+        });
+
+        计算机GateMarker.on('click', function (e) {
+            infoWindow.setContent('计算机');
+            infoWindow.open(map, 计算机GateMarker.getPosition());
+            calculateRoute(计算机GateMarker.getPosition());
+        });
+
+        理学院GateMarker.on('click', function (e) {
+            infoWindow.setContent('理学院');
+            infoWindow.open(map, 理学院GateMarker.getPosition());
+            calculateRoute(理学院GateMarker.getPosition());
+        });
+
+        外国语GateMarker.on('click', function (e) {
+            infoWindow.setContent('外国语');
+            infoWindow.open(map, 外国语GateMarker.getPosition());
+            calculateRoute(外国语GateMarker.getPosition());
+        });
+
+        嘉庚图书馆GateMarker.on('click', function (e) {
+            infoWindow.setContent('嘉庚图书馆');
+            infoWindow.open(map, 嘉庚图书馆GateMarker.getPosition());
+            calculateRoute(嘉庚图书馆GateMarker.getPosition());
+        });
+
+        延奎图书馆GateMarker.on('click', function (e) {
+            infoWindow.setContent('延奎图书馆');
+            infoWindow.open(map, 延奎图书馆GateMarker.getPosition());
+            calculateRoute(延奎图书馆GateMarker.getPosition());
+        });
+
+        信息GateMarker.on('click', function (e) {
+            infoWindow.setContent('信息');
+            infoWindow.open(map, 信息GateMarker.getPosition());
+            calculateRoute(信息GateMarker.getPosition());
+        });
+
+        // 创建信息窗体
+        var infoWindow = new AMap.InfoWindow();
+
+        // 监听标记点的点击事件
+        southGateMarker.on('click', function (e) {
+            infoWindow.setContent('南门');
+            infoWindow.open(map, southGateMarker.getPosition());
+            calculateRoute(southGateMarker.getPosition());
+        });
+
+        eastGateMarker.on('click', function (e) {
+            infoWindow.setContent('东门');
+            infoWindow.open(map, eastGateMarker.getPosition());
+            calculateRoute(eastGateMarker.getPosition());
+        });
+
+        gymGateMarker.on('click', function (e) {
+            infoWindow.setContent('体院门');
+            infoWindow.open(map, gymGateMarker.getPosition());
+            calculateRoute(gymGateMarker.getPosition());
+        });
+
+        smallGateMarker.on('click', function (e) {
+            infoWindow.setContent('小铁门');
+            infoWindow.open(map, smallGateMarker.getPosition());
+            calculateRoute(smallGateMarker.getPosition());
+        });
+
+        // Use AMap.Geolocation to get the user's current location
+        AMap.plugin('AMap.Geolocation', function () {
+            var geolocation = new AMap.Geolocation({
+                enableHighAccuracy: true, // enable high accuracy positioning
+                timeout: 10000, // set timeout value
+                buttonPosition: 'RB', // locate button position
+                buttonOffset: new AMap.Pixel(10, 20), // locate button offset
+                zoomToAccuracy: true, // zoom map to accuracy circle
+            });
+
+            map.addControl(geolocation);
+
+            geolocation.getCurrentPosition(function (status, result) {
+                if (status === 'complete') {
+                    // Add a marker for the user's location
+                    var userLocationMarker = new AMap.Marker({
+                        position: result.position,
+                        map: map,
+                        title: '您的位置'
+                    });
+                } else {
+                    console.error('Failed to get user location', result);
+                }
+            });
+        });
+
+        // Calculate and display the walking route from the user's location to the clicked point
+        var walking;
+        function calculateRoute(destination) {
+            if (walking) {
+                walking.clear();
+            }
+
+            AMap.plugin('AMap.Walking', function () {
+                walking = new AMap.Walking({
+                    map: map,
+                    panel: 'routePanel',
+                    panToLocation: false,
+                });
+
+                walking.search(map.getCenter(), destination, function (status, result) {
+                    if (status === 'complete') {
+                        console.log('Walking route displayed successfully');
+                    } else {
+                        console.error('Failed to display walking route', result);
+                    }
+                });
+            });
+        }
+
+        AMap.plugin(
+            ['AMap.ToolBar', 'AMap.Scale', 'AMap.ControlBar'],
+            function () {
+                map.addControl(new AMap.ToolBar())
+                map.addControl(new AMap.Scale())
+                map.addControl(new AMap.ControlBar())
+            }
+        )
+
+        // Enable dragging of the map when the middle mouse button is pressed
+        map.on('mousedown', function (e) {
+            if (e.button === 1) {
+                map.setDefaultCursor('grabbing');
+                map.setStatus({ dragEnable: true });
+            }
+        });
+
+        // Disable dragging of the map when the middle mouse button is released
+        map.on('mouseup', function (e) {
+            if (e.button === 1) {
+                map.setDefaultCursor('grab');
+                map.setStatus({ dragEnable: false });
+            }
+        });
+    </script>
+    <div id="routePanel"></div>
 </body>
 
 </html>
