@@ -21,12 +21,22 @@
 </head>
 
 <body>
-    <button id="showImageBtn"
-        onclick="window.location.href='https://www.jmu.edu.cn/__local/B/E1/F8/76002F4B5092DF01953C44BE142_AE54560A_B21DB.jpg'">二维俯视图</button>
+
+
+
     <!-- 创建地图容器 -->
     <div id="container"></div>
-    <div class="info">使用说明：地图蓝色标记点将鼠标放置后可以显示地点名称。路线规划功能需点击您所在位置后，在点击目的地（目的地也必须是标记点）</div>
+    <div class="info">路线规划功能需点击您所在位置后，在点击目的地（目的地也必须是标记点）</div>
     <div id="imageDiv"></div>
+    <div class="button-container">
+        <button class="showImageBtn"
+            onclick="window.location.href='https://www.jmu.edu.cn/__local/B/E1/F8/76002F4B5092DF01953C44BE142_AE54560A_B21DB.jpg'">主校区二维俯视图</button>
+        <button class="showImageBtn"
+            onclick="window.location.href='https://pano-geo.720yun.com/vr/a79jOdkwtO2'">航海机械美术财经VR图</button>
+        <button class="showImageBtn" onclick="window.location.href='https://www.earthol.org/map-756.html'">实景图</button>
+        <button id="deliveryButton">取快递</button>
+
+    </div>
     <script>
         //创建地图对象
         var map = new AMap.Map('container', {
@@ -35,94 +45,206 @@
             viewMode: '3D',
             pitch: 45,
         });
+        // 创建一个红色标记点图标
+        var redMarkerIcon = new AMap.Icon({
+            size: new AMap.Size(32, 32), // 图标尺寸
+            image: 'https://webapi.amap.com/theme/v1.3/markers/n/mark_r.png', // 红色标记点的图标URL
+            imageSize: new AMap.Size(32, 32) // 图标显示尺寸
+        });
+
+        // 添加kdizhan标记点
+        var southGateMarker = new AMap.Marker({
+            position: [118.09421, 24.585137],
+            map: map,
+            title: '快递站',
+            label: {
+                content: '庄重文快递站',
+                offset: new AMap.Pixel(0, 0)
+            },
+            icon: redMarkerIcon // 设置标记点的图标为红色
+        });
+
+        var southGateMarker = new AMap.Marker({
+            position: [118.099768, 24.584562],
+            map: map,
+            title: '快递站',
+            label: {
+                content: '厂房快递站',
+                offset: new AMap.Pixel(0, 0)
+            },
+            icon: redMarkerIcon // 设置标记点的图标为红色
+        });
+
+
+        // 获取取快递按钮元素
+        var deliveryButton = document.getElementById('deliveryButton');
+
+        // 添加点击事件处理程序
+        deliveryButton.addEventListener('click', function () {
+            // 使用 confirm 函数显示询问框，并根据用户选择执行不同的操作
+            var isZhuangZhongWen = confirm('您要去庄重文快递站吗？\n点击 "确定" 前往庄重文快递站，点击 "取消" 前往厂房快递站。');
+            if (isZhuangZhongWen) {
+                // 用户选择前往庄重文快递站
+                calculateRoute([118.09421, 24.585137]); // 庄重文快递站的坐标
+            } else {
+                // 用户选择前往厂房快递站
+                calculateRoute([118.099768, 24.584562]); // 厂房快递站的坐标
+            }
+        });
+
+
 
         // 添加南门标记点
         var southGateMarker = new AMap.Marker({
             position: [118.093604, 24.574557],
             map: map,
-            title: '南门'
+            title: '南门',
+            label: {
+                content: '南门',
+                offset: new AMap.Pixel(0, 0)
+            }
         });
 
         // 添加东门标记点
         var eastGateMarker = new AMap.Marker({
             position: [118.096731, 24.577488],
             map: map,
-            title: '东门'
+            title: '东门',
+            label: {
+                content: '东门',
+                offset: new AMap.Pixel(0, 0)
+            }
         });
 
         // 添加体院门标记点
         var gymGateMarker = new AMap.Marker({
             position: [118.098153, 24.580445],
             map: map,
-            title: '体院门'
+            title: '体院门',
+            label: {
+                content: '体院门',
+                offset: new AMap.Pixel(0, 0)
+            }
         });
 
         // 添加小铁门标记点
         var smallGateMarker = new AMap.Marker({
             position: [118.100755, 24.584947],
             map: map,
-            title: '小铁门'
+            title: '小铁门',
+            label: {
+                content: '小铁门',
+                offset: new AMap.Pixel(0, 0)
+            }
         });
 
+        // 添加海外学院标记点
         var 海外GateMarker = new AMap.Marker({
             position: [118.096762, 24.579093],
             map: map,
-            title: '海外学院'
+            title: '海外学院',
+            label: {
+                content: '海外学院',
+                offset: new AMap.Pixel(0, 0)
+            }
         });
 
+        // 添加港工标记点
         var 港工GateMarker = new AMap.Marker({
             position: [118.095721, 24.578157],
             map: map,
-            title: '港工'
+            title: '港工',
+            label: {
+                content: '港工',
+                offset: new AMap.Pixel(0, 0)
+            }
         });
 
+        // 添加工商标记点
         var 工商GateMarker = new AMap.Marker({
             position: [118.095518, 24.576591],
             map: map,
-            title: '工商'
+            title: '工商',
+            label: {
+                content: '工商',
+                offset: new AMap.Pixel(0, 0)
+            }
         });
 
+        // 添加师范标记点
         var 师范GateMarker = new AMap.Marker({
             position: [118.093334, 24.576864],
             map: map,
-            title: '师范'
+            title: '师范',
+            label: {
+                content: '师范',
+                offset: new AMap.Pixel(0, 0)
+            }
         });
 
+        // 添加计算机标记点
         var 计算机GateMarker = new AMap.Marker({
             position: [118.092235, 24.576381],
             map: map,
-            title: '计算机'
+            title: '计算机',
+            label: {
+                content: '计算机',
+                offset: new AMap.Pixel(0, 0)
+            }
         });
 
+        // 添加理学院标记点
         var 理学院GateMarker = new AMap.Marker({
             position: [118.091961, 24.57702],
             map: map,
-            title: '理学院'
+            title: '理学院',
+            label: {
+                content: '理学院',
+                offset: new AMap.Pixel(0, 0)
+            }
         });
 
+        // 添加外国语标记点
         var 外国语GateMarker = new AMap.Marker({
             position: [118.093361, 24.578576],
             map: map,
-            title: '外国语'
+            title: '外国语',
+            label: {
+                content: '外国语',
+                offset: new AMap.Pixel(0, 0)
+            }
         });
 
+        // 添加嘉庚图书馆标记点
         var 嘉庚图书馆GateMarker = new AMap.Marker({
             position: [118.095196, 24.580206],
             map: map,
-            title: '嘉庚图书馆'
+            title: '嘉庚图书馆',
+            label: {
+                content: '嘉庚图书馆',
+                offset: new AMap.Pixel(0, 0)
+            }
         });
 
         var 延奎图书馆GateMarker = new AMap.Marker({
             position: [118.092487, 24.577908],
             map: map,
-            title: '延奎图书馆'
+            title: '延奎图书馆',
+            label: {
+                content: '延奎图书馆',
+                offset: new AMap.Pixel(0, 0)
+            }
         });
 
         var 信息GateMarker = new AMap.Marker({
             position: [118.093259, 24.580435],
             map: map,
-            title: '信息'
-        });
+            title: '信息',
+            label: {
+                content: '信息',
+                offset: new AMap.Pixel(0, 0)
+            }
+        })
 
         海外GateMarker.on('click', function (e) {
             infoWindow.setContent('海外学院');
