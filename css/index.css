@@ -4,3 +4,20 @@ body,
     width: 100%;
     height: 100%;
 }
+
+.button-container {
+    position: absolute;
+    left: 20px;
+    /* 调整按钮容器的左侧位置 */
+    top: 50%;
+    /* 将按钮容器垂直居中 */
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    /* 纵向排列按钮 */
+}
+
+.showImageBtn {
+    margin-bottom: 10px;
+    /* 调整按钮之间的垂直间距 */
+}
