@@ -35,6 +35,7 @@
             onclick="window.location.href='https://pano-geo.720yun.com/vr/a79jOdkwtO2'">航海机械美术财经VR图</button>
         <button class="showImageBtn" onclick="window.location.href='https://www.earthol.org/map-756.html'">实景图</button>
         <button id="deliveryButton">取快递</button>
+        <!-- <button id="cardButton">补办学生校园卡</button> -->
 
     </div>
     <script>
@@ -333,22 +334,23 @@
             infoWindow.open(map, smallGateMarker.getPosition());
             calculateRoute(smallGateMarker.getPosition());
         });
+        // 定位插件
 
-        // Use AMap.Geolocation to get the user's current location
         AMap.plugin('AMap.Geolocation', function () {
             var geolocation = new AMap.Geolocation({
-                enableHighAccuracy: true, // enable high accuracy positioning
-                timeout: 10000, // set timeout value
-                buttonPosition: 'RB', // locate button position
-                buttonOffset: new AMap.Pixel(10, 20), // locate button offset
-                zoomToAccuracy: true, // zoom map to accuracy circle
+                enableHighAccuracy: true,
+                timeout: 10000,
+                buttonPosition: 'RB',
+                buttonOffset: new AMap.Pixel(10, 20),
+                zoomToAccuracy: true,
             });
 
+            // 定位实现
             map.addControl(geolocation);
 
             geolocation.getCurrentPosition(function (status, result) {
                 if (status === 'complete') {
-                    // Add a marker for the user's location
+
                     var userLocationMarker = new AMap.Marker({
                         position: result.position,
                         map: map,
@@ -360,7 +362,7 @@
             });
         });
 
-        // Calculate and display the walking route from the user's location to the clicked point
+        // 步行规划
         var walking;
         function calculateRoute(destination) {
             if (walking) {
@@ -376,14 +378,14 @@
 
                 walking.search(map.getCenter(), destination, function (status, result) {
                     if (status === 'complete') {
-                        console.log('Walking route displayed successfully');
+                        console.log('规划成功');
                     } else {
-                        console.error('Failed to display walking route', result);
+                        console.error('步行路线规划失败', result);
                     }
                 });
             });
         }
-
+        //加载控件
         AMap.plugin(
             ['AMap.ToolBar', 'AMap.Scale', 'AMap.ControlBar'],
             function () {
@@ -392,8 +394,10 @@
                 map.addControl(new AMap.ControlBar())
             }
         )
+        // 当鼠标按下时（mousedown事件），通过判断e.button来确定是否是鼠标中键按下，如果是，则将地图的默认鼠标样式设置为'grabbing'，并且启用地图的拖拽功能。
+        // 当鼠标抬起时（mouseup事件），同样通过判断e.button来确定是否是鼠标中键抬起，如果是，则将地图的默认鼠标样式设置为'grab'，并且禁用地图的拖拽功能。
+        //较难使用，对于手机用户没差，且没有出错，不改了
 
-        // Enable dragging of the map when the middle mouse button is pressed
         map.on('mousedown', function (e) {
             if (e.button === 1) {
                 map.setDefaultCursor('grabbing');
@@ -401,13 +405,47 @@
             }
         });
 
-        // Disable dragging of the map when the middle mouse button is released
+
         map.on('mouseup', function (e) {
             if (e.button === 1) {
                 map.setDefaultCursor('grab');
                 map.setStatus({ dragEnable: false });
             }
         });
+
+
+        ///////////////////////11.26
+        // 创建显示图片的信息窗体的函数
+        function showImageWindow(marker, imgPaths) {
+            var content = '<div class="image-container">';
+            imgPaths.forEach(function (path) {
+                content += '<img src="' + path + '" style="width:100%;margin-top:10px;"/>';
+            });
+            content += '</div>';
+
+            var infoWindow = new AMap.InfoWindow({
+                content: content,
+                offset: new AMap.Pixel(20, 50)
+            });
+
+            infoWindow.open(map, marker.getPosition());
+        }
+
+        //修改南门标记点的点击事件，点击出现图片
+        southGateMarker.on('click', function () {
+            showImageWindow(southGateMarker, ['./南门.jpg']);
+        });
+
+        eastGateMarker.on('click', function () {
+            showImageWindow(eastGateMarker, ['./东门.jpg']);
+        });
+
+        gymGateMarker.on('click', function () {
+            showImageWindow(gymGateMarker, ['./体.jpg']);
+        });
+
+
+
     </script>
     <div id="routePanel"></div>
 </body>
